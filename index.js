@@ -7,4 +7,16 @@ require('dotenv').config()
 // const dotenv = require(dotenv)
 // dotenv.config()
 
-console.log('env: ', process.env.DB_USER)
+const db = require('./src/lib/db') // gusrada el objeto que tiene el métod connect del archivo db.js
+const server = require('./src/server')
+
+const { PORT = 3030 } = process.env
+
+db.connect() // db es el objeto y connect es la función
+  .then(() => {
+    console.log('DB connected')
+    server.listen(PORT, () => console.log(`Server running on port: ${PORT}`))
+  })
+  .catch(error => {
+    console.error('DB ERROR: ', error)
+  })
